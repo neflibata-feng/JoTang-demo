@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>二手平台 Demo</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    input, button { margin: .5rem 0; padding: .5rem; }
+    #result { margin-top: 1rem; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>二手平台 Demo</h1>
+
+  <h2>新增商品</h2>
+  <input id="name" placeholder="商品名称">
+  <button onclick="addProduct()">提交</button>
+
+  <h2>商品列表</h2>
+  <button onclick="loadProducts()">查询</button>
+
+  <div id="result"></div>
+
+  <script>
+    const API_BASE = "http://api.yourdomain.com/api/products";
+
+    async function addProduct() {
+      const name = document.getElementById("name").value;
+      const res = await fetch(API_BASE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = "新增结果:\n" + JSON.stringify(data, null, 2);
+    }
+
+    async function loadProducts() {
+      const res = await fetch(API_BASE);
+      const data = await res.json();
+      document.getElementById("result").innerText = "商品列表:\n" + JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
